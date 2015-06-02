@@ -1,11 +1,13 @@
 ASK_Slang 
 ====
+ASK_Slang allows you to leverage all the power of simple ASK 433mhz transceivers and have long range (200 meters in city environment, many kilometers in air to ground communication) digital data communication channel (2857 baud/s - 357 bytes/s) with a simple and user friendly set of functions to manage data transmission.
+ASK_Slang is based on [PJON](https://github.com/gioblu/PJON), contains a version of [digitalWriteFast](https://github.com/mpflaga/Arduino-digitalWriteFast) modified to work with arduino 1.0 version IDE and [Cape](https://github.com/gioblu/Cape) encryption library to optionally encrypt your data.
 
-ASK_Slang is a device communications bus system that runs over ASK 433mhz radio transceivers, as VirtualWire or RadioHead creates a communication link between two distant arduino boards. This protocol is design to obtain a really high range and data communication accuracy. ASK_Slang works without the need of timers or interrupts using only **micros()** and **delayMicroseconds()** functions, contains a **packet manager**, optional **collision avoidance**, optional **encryption** and, optional **many to one communication** with 254 device assignable IDs.
+## Why?
+I am working with High Altitude Balloon probes and I need a reliable digital communication protocol I can fully understand that works good with cheap ASK 433Mhz radio transceivers ensuring long range accurate data stream.
 
-
-
- |Absolute bandwidth:  261 bytes/s    | Transfer speed: 357  bytes/s                
- |Practical bandwidth: 216 bytes/s    | Baud rate:      2857 baud/s                 
- |Accuracy: 96.45%                    | Range: 200 meters in city environment   
- 
+* ASK_Slang works without the need of timers or interrupts using only **micros()** and **delayMicroseconds()**
+* contains a **packet manager**
+* optional **collision avoidance** 
+* optional **encryption** , based on [Cape](https://github.com/gioblu/Cape)
+* optional **many to one communication** with 254 device assignable IDs.
