@@ -11,11 +11,22 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
 
 * ASK_Slang works without timers or interrupts using only **micros()** and **delayMicroseconds()**
 * 254 selectable IDs to be assigned to your devices:
-  ||| ASK_Slang network(12, 133); // 12 is your PIN number on wich TX is connected and 133 is the device ID
+  ```cpp  
+  ASK_Slang network(12, 133); // 12 is your PIN number on wich TX is connected and 133 is the device ID
+  ```
+  
 * contains a **packet manager**
-  ||| ASK_Slang network.send(33, "Ciao!", 1000); // Send to ID 33 "Ciao!" every 1000 milliseconds
-  ||| Ask_Slang network.update();
+  ```cpp
+  ASK_Slang network.send(33, "Ciao!", 1000); // Send to ID 33 "Ciao!" every 1000 milliseconds
+  Ask_Slang network.update();
+  ```
+  
 * optional **collision avoidance** 
-  ||| network.set_collision_avoidance(true); 
+  ```cpp
+  network.set_collision_avoidance(true); 
+  ```
+  
 * optional **encryption** , based on [Cape](https://github.com/gioblu/Cape)
-  ||| network.set_encryption(true); 
+  ```cpp
+  network.set_encryption(true); 
+  ```
