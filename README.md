@@ -26,7 +26,7 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   network.set_collision_avoidance(true); 
   ```
   
-* optional **encryption** , based on [Cape](https://github.com/gioblu/Cape)
+* optional **encryption** based on [Cape](https://github.com/gioblu/Cape)
   ```cpp
   network.set_encryption(true); 
   ```
