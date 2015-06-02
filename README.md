@@ -12,12 +12,12 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
 * ASK_Slang works without timers or interrupts using only **micros()** and **delayMicroseconds()**
 * 254 selectable IDs to be assigned to your devices:
   ```cpp  
-  ASK_Slang network(12, 133); // 12 is your PIN number on wich TX is connected and 133 is the device ID
+  ASK_Slang network(12 /*Radio i/o Pin*/, 133 /*Selecetd device ID*/);
   ```
   
 * contains a **packet manager**
   ```cpp
-  ASK_Slang network.send(33, "Ciao!", 1000); // Send to ID 33 "Ciao!" every 1000 milliseconds
+  ASK_Slang network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!", /*Interval*/1000); 
   Ask_Slang network.update();
   ```
   
