@@ -21,11 +21,6 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   Ask_Slang network.update();
   ```
   
-* optional **collision avoidance** 
-  ```cpp
-  network.set_collision_avoidance(true); 
-  ```
-  
 * optional **encryption** based on [Cape](https://github.com/gioblu/Cape)
   ```cpp
   network.set_encryption(true); 
