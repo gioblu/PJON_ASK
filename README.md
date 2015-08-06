@@ -24,6 +24,9 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   ```cpp
   network.update();
   ```
+
+## Send
+
 * **send a string** to a certain device:
   ```cpp
   network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!"); 
@@ -39,3 +42,16 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   ```cpp
   network.remove(ciao);
   ```
+  
+  ## Reveice
+  
+* Call receive() at least once every loop cycle (rember that every other task the arduino board is executing is a hole in your receiving capacity. In other words, your arduino while is reading a sensor is not receiving data, and so the transmitter risks not have anyone to the other side ready to receive): 
+  ```cpp
+  network.receive();
+  ```
+
+* If you want to dedicate a certain time frame only to network connection and possible communication:
+  ```cpp
+  network.receive(1000000); //receive for 1.000.000 microseconds so 1 second 
+  ```
+
