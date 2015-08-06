@@ -20,16 +20,22 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   ```cpp
   network.set_encryption(true); 
   ```
+* PJON need to be updated at least every loop cycle to work correctly:
+  ```cpp
+  network.update();
+  ```
 * **send a string** to a certain device:
   ```cpp
   network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!"); 
   network.update(); // Call update() at least once every loop 
   ```
-  
+
 * use the **packet manager** and schedule a sending:
   ```cpp
-  network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!", /*Interval*/ 1000); 
+  int ciao = network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!", /*Interval*/ 1000); 
   network.update(); // Call update() at least once every loop 
   ```
-
-
+* if later you want to remove / kill this sending task:
+  ```cpp
+  network.remove(ciao);
+  ```
