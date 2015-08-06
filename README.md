@@ -14,14 +14,20 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   ```cpp  
   ASK_Slang network(/*Radio I/O Pin*/ 12, /*Selecetd device ID*/ 133);
   ```
-  
-* contains a **packet manager**
-  ```cpp
-  network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!", /*Interval*/ 1000); 
-  network.update();
-  ```
-  
 * optional **encryption** based on [Cape](https://github.com/gioblu/Cape)
   ```cpp
   network.set_encryption(true); 
   ```
+* **send a string** to a certain device:
+  ```cpp
+  network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!"); 
+  network.update(); // Call update() at least once every loop 
+  ```
+  
+* contains a **packet manager**
+  ```cpp
+  network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!", /*Interval*/ 1000); 
+  network.update(); // Call update() at least once every loop 
+  ```
+
+
