@@ -17,8 +17,8 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   
 * contains a **packet manager**
   ```cpp
-  ASK_Slang network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!", /*Interval*/ 1000); 
-  Ask_Slang network.update();
+  network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!", /*Interval*/ 1000); 
+  network.update();
   ```
   
 * optional **encryption** based on [Cape](https://github.com/gioblu/Cape)
