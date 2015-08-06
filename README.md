@@ -11,9 +11,11 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
 
 * ASK_Slang works without timers or interrupts using only **micros()** and **delayMicroseconds()**
 * 254 selectable IDs to be assigned to your devices:
+* 
   ```cpp  
   ASK_Slang network(/*Radio I/O Pin*/ 12, /*Selecetd device ID*/ 133);
   ```
+  
 * optional **encryption** based on [Cape](https://github.com/gioblu/Cape)
   ```cpp
   network.set_encryption(true); 
