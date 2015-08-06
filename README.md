@@ -36,6 +36,7 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   network.update(); // Call update() at least once every loop 
   ```
 * if later you want to remove / kill this sending task:
+
   ```cpp
   network.remove(ciao);
   ```
