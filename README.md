@@ -26,7 +26,7 @@ I am working with High Altitude Balloon probes and I need a reliable digital com
   network.update(); // Call update() at least once every loop 
   ```
   
-* contains a **packet manager**
+* use the **packet manager** and schedule a sending:
   ```cpp
   network.send(/*Recipient ID*/ 33, /*Content*/ "Ciao!", /*Interval*/ 1000); 
   network.update(); // Call update() at least once every loop 
