@@ -1,7 +1,7 @@
 PJON_ASK v1.0 stable
 ==== 
  
-**PJON_ASK** is an arduino compatible implementation of PJON for ASK 433Mhz radio modules like this one:
+Arduino compatible implementation of PJON for ASK 433Mhz radio modules like this one:
 
 ![alt tag](http://img.banggood.com/images/upload/2012/chenjianwei/SKU064487.5.jpg)
 
