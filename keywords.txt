@@ -1,0 +1,42 @@
+#######################################
+# Syntax Coloring Map For PJON
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PJON	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+update KEYWORD2
+send KEYWORD2
+remove	KEYWORD2
+send_bit	KEYWORD2
+send_byte	KEYWORD2
+send_string	KEYWORD2
+syncronization_bit	KEYWORD2
+read_byte	KEYWORD2
+can_start	KEYWORD2
+receive_byte	KEYWORD2
+receive	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+ACK  LITERAL1
+NAK  LITERAL1
+FAIL LITERAL1
+BUSY LITERAL1
+BROADCAST LITERAL1
+TO_BE_SENT LITERAL1
+CMD LITERAL1
