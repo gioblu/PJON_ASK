@@ -97,13 +97,13 @@ Take in consideration that in simplex mode is impossible to know if the receiver
 
 The suggested antenna if you have space available is a 69cm dipole antenna for both transmitter and receiver module:
 ```cpp  
-      
-           345mm                    345mm
--------------------------|-------------------------
-                       __|__
-                      |  O  |
-                      |_____|
-                      
+       
+              345mm                    345mm
+   -------------------------|-------------------------
+                          __|__
+                         |  O  |
+                         |_____|
+                       
 ```
 
 
