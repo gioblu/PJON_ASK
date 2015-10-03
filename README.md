@@ -8,7 +8,7 @@ PJON (Padded Jittering Operative Network) is a single wire, multi-master communi
 If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki). 
 
 ```cpp  
-#include <PJON.h>     // Transmitter board code
+#include <PJON_ASK.h>     // Transmitter board code
 PJON network(11, 12, 45); // receiver to pin 11, transmitter to pin 12, device id 45
 
 void setup() {
@@ -22,7 +22,7 @@ void loop() {
 
 /* ---------------------------------------------------------------------------- */
 
-#include <PJON.h>     // Receiver board code
+#include <PJON_ASK.h>     // Receiver board code
 PJON network(11, 12, 44); // receiver to pin 11, transmitter to pin 12, device id 44
 
 void setup() {
@@ -67,7 +67,7 @@ void loop() {
 - Arduino Mega
 
 This library is tested effectively with many versions of the ASK 433Mhz module present on ebay and various other webshops.
-This implementation work with a simple oversampling approach, for this reason works also on wires and other radio modules. If you need communication through wire check the PJON wire implementation [here](https://github.com/gioblu/PJON).
+This implementation works with a simple oversampling approach, for this reason works also on wires and other radio modules. If you need communication through wire check the PJON wire implementation [here](https://github.com/gioblu/PJON).
 
 ####Why not I2c?
 I2C is a bus system engineered to work with short wires to connect devices and it needs at least 2 wires. No long wires can be used, this excludes home automation applications. If one of the connections to the bus fails, even briefly, one or both devices may freeze. For this reason i2c is not practical for high vibration scenarios such as automotive applications.
