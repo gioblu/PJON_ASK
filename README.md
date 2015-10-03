@@ -76,15 +76,15 @@ I2C is a bus system engineered to work with short wires to connect devices and i
 1-Wire is almost what I needed for a lot of projects but has its downsides: first it is propietary and closed source code and second, for me, the implementation is a littlebit chaotic.
 
 ## How to start
-The first step is the physical layer. Lets wire the two arduinos. Simply find a piece of wire and select a digital pin you want to use on both boards where to connect the transmitter's and receiver's pin. After this you should have both arduino boards connected by the wires on both transmitter and receiver module.
+The first step is the physical layer. Lets wire the two arduinos. Simply find a piece of wire and select a digital pin you want to use on both boards where to connect the receiver's and transmitter's pin. After this you should have both arduino boards connected by the wires to both transmitter and receiver module.
 
-Lets start coding, instantiate the `PJON` object that in the example is called network. To initialize a network based on PJON you need only to define the transmission, and reception pin (any free digital pin on your board) where ASK transmitter and receiver are connected and a unique ID (0 - 255):
+Lets start coding, instantiate the `PJON` object that in the example is called network. To initialize a network based on PJON you need only to define the reception and transmission pin (any free digital pin on your board) where ASK receiver and transmitter are connected and a unique ID (0 - 255):
 
 ```cpp  
   PJON network(11, 12, 123); 
 ```
 
-If you have only the transmitter on a board and the receiver on anotherone, you transmit in simplex mode. You should simply pass  `NOT_USED` instead of the receiver pin:
+If you have only the transmitter on a board and the receiver on anotherone, you transmit in simplex mode. You should pass  `NOT_USED` instead of the receiver pin:
 ```cpp  
   PJON network(NOT_USED, 12, 123); 
 ```
@@ -94,7 +94,7 @@ On the other side if you have only the receiver module:
   PJON network(12, NOT_USED, 123); 
 ```
 
-Take in consideration that in simplex mode is impossible to know if the receiver got the right message. This happens because you don't have on the transmitter module a receiver module able to hear the `ACK`, for this reason if one of the pins are `NOT_USED` PJON_ASK runs in simplex mode not sending `ACK` and not checking if the channel is used.
+Take in consideration that in simplex mode is impossible to know if the receiver got the right message. This happens because you don't have on the transmitter side a receiver module able to hear the `ACK`, for this reason if one of the pins are `NOT_USED` PJON_ASK runs in simplex mode not sending `ACK` and not checking if the channel is used.
 
 
 ## Transmit data
