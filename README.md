@@ -57,6 +57,7 @@ void loop() {
 - Transfer speed: **256 B/s** or **2564 Baud** 
 - Data throughput: **216 B/s** 
 - Accuracy: **99.995%**
+- Range: **200 meters** in urban environment (still not tested with LOS in open air)
 
 ####Compatibility
 - Arduino Diecimila / Duemilanove
