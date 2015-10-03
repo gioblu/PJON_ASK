@@ -1,11 +1,11 @@
 PJON_ASK v1.0 stable
 ==== 
  
-PJON (Padded Jittering Operative Network) is a single wire, multi-master communication bus system. It is designed as an alternative to i2c, 1-Wire, Serial and other Arduino compatible protocols. **PJON_ASK** is an arduino compatible implementation of PJON for ASK 433Mhz radio transceivers like this one:
+**PJON_ASK** is an arduino compatible implementation of PJON for ASK 433Mhz radio transceivers like this one:
 
 ![alt tag](http://img.banggood.com/images/upload/2012/chenjianwei/SKU064487.5.jpg)
 
-If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki). 
+PJON (Padded Jittering Operative Network) is a single wire, multi-master communication bus system. And can be a valid alternative to VirtualWire library (generally used with this modules). With PJON_ASK you have a real wireless network with indexed devices communicating through packets in half-duplex or simplex mode with CRC error detection and correct reception acknowledge. If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki). 
 
 ```cpp  
 #include <PJON_ASK.h>     // Transmitter board code
