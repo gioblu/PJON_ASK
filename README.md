@@ -95,6 +95,17 @@ On the other side if you have only the receiver module:
 
 Take in consideration that in simplex mode is impossible to know if the receiver got the right message. This happens because you don't have on the transmitter side a receiver module able to hear the `ACK`, for this reason if one of the pins are `NOT_USED` PJON_ASK runs in simplex mode not sending `ACK` and not checking if the channel is used.
 
+The suggested antenna if you have space available is a 69cm dipole antenna for both transmitter and receiver module:
+```cpp  
+      
+           345mm                    345mm
+-------------------------|-------------------------
+                       __|__
+                      |  O  |
+                      |_____|
+                      
+```
+
 
 ## Transmit data
 Data transmission is handled by a packet manager, the `update()` function has to be called at least once per loop cycle. Consider that this is not an interrupt driven system, all the time dedicated to delays or executing other tasks is postponing the sending of all the packets are scheduled to be sent:
