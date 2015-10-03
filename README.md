@@ -5,7 +5,7 @@ PJON_ASK v1.0 stable
 
 ![alt tag](http://img.banggood.com/images/upload/2012/chenjianwei/SKU064487.5.jpg)
 
-PJON (Padded Jittering Operative Network) is a single wire, multi-master communication bus system. And can be a valid alternative to VirtualWire library (generally used with this modules). With PJON_ASK you have a real wireless network with indexed devices communicating through packets in half-duplex or simplex mode with CRC error detection and correct reception acknowledge. If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki). 
+PJON (Padded Jittering Operative Network) is an opensource multi-master communication bus system standard. Its 433Mhz radio implementation, PJON_ASK, can be a valid alternative to VirtualWire library (generally used with this modules). With PJON_ASK you have a real wireless network with indexed devices communicating through packets in half-duplex or simplex mode with CRC error detection and correct reception acknowledge. If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki). 
 
 ```cpp  
 #include <PJON_ASK.h>     // Transmitter board code
