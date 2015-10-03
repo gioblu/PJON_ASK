@@ -1,4 +1,4 @@
-PJON v1.0 stable
+PJON_ASK v1.0 stable
 ==== 
  
 PJON (Padded Jittering Operative Network) is a single wire, multi-master communication bus system. It is designed as an alternative to i2c, 1-Wire, Serial and other Arduino compatible protocols. PJON_ASK is an arduino compatible implementation of PJON for ASK 433Mhz radio transceivers like this one:
@@ -53,8 +53,8 @@ void loop() {
 - Error handling.
 
 ####Performance
-- Transfer speed: **42372Bd** or **5.29kB/s** 
-- Data throughput: **2.68kB/s** 
+- Transfer speed: **256 B/s** or **2564 Baud** 
+- Data throughput: **216 B/s** 
 - Accuracy: **99.995%**
 
 ####Compatibility
