@@ -68,11 +68,9 @@ void loop() {
 This library is tested effectively with many versions of the ASK 433Mhz module present on ebay and various other webshops.
 This implementation works with a simple oversampling approach, for this reason works also on wires and other radio modules. If you need communication through wire check the PJON wire implementation [here](https://github.com/gioblu/PJON).
 
-####Why not I2c?
-I2C is a bus system engineered to work with short wires to connect devices and it needs at least 2 wires. No long wires can be used, this excludes home automation applications. If one of the connections to the bus fails, even briefly, one or both devices may freeze. For this reason i2c is not practical for high vibration scenarios such as automotive applications.
+####Why not VirtualWire?
+I don't think VirtualWire is clear, efficient and understandable enough to be the standard library for wireless radio communication available to the community, because of its implementation mess and complexity. Moreover VirtualWire doesn't have the support for multiple devices in multimaster setup, CRC, acknowledge, collision avoidance and packet management. For this reason I wrote this implementation to provide to the user with the PJON standard on wireless. :)
 
-####Why not 1-Wire?
-1-Wire is almost what I needed for a lot of projects but has its downsides: first it is propietary and closed source code and second, for me, the implementation is a littlebit chaotic.
 
 ## How to start
 The first step is the physical layer. Lets wire the two arduinos. Simply find a piece of wire and select a digital pin you want to use on both boards where to connect the receiver's and transmitter's pin. After this you should have both arduino boards connected by the wires to both transmitter and receiver module.
