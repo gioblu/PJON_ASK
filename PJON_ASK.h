@@ -51,10 +51,12 @@ of the use of this software, even if advised of the possibility of such damage. 
 #define TO_BE_SENT 74
 
 #define NOT_USED 9999
+#define BIT_SPACER_READINGS 5
 
 // Errors
 #define CONNECTION_LOST 101
 #define PACKETS_BUFFER_FULL 102
+#define MEMORY_FULL 103 
 
 // Maximum sending attempts before throwing CONNECTON_LOST error
 #define MAX_ATTEMPTS 250 

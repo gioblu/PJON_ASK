@@ -206,6 +206,12 @@ int PJON_ASK::send_string(uint8_t ID, char *string, uint8_t length) {
 
 int PJON_ASK::send(uint8_t ID, char *packet, uint8_t length, unsigned long timing) {
   char *str = (char *) malloc(length);
+  
+  if(str == NULL) {
+    this->_error(MEMORY_FULL, FAIL);
+    return FAIL;
+  }
+     
   memcpy(str, packet, length);
 
   for(uint8_t i = 0; i < MAX_PACKETS; i++)
@@ -294,8 +300,9 @@ int PJON_ASK::receive_byte() {
   float value = 0.5;
   unsigned long time = micros();
 
-  while(micros() - time < BIT_SPACER && digitalRead(_input_pin))
-    value = (value * 0.999)  + (digitalRead(_input_pin) * 0.001);
+
+  while(micros() - time < BIT_SPACER && digitalReadFast(_input_pin))
+    value = (value * 0.999)  + (digitalReadFast(_input_pin) * 0.001);
 
   time = micros();
 
@@ -303,7 +310,7 @@ int PJON_ASK::receive_byte() {
     value = 0.5;
 
     while(micros() - time < BIT_WIDTH)
-      value = (value * 0.999)  + (digitalRead(_input_pin) * 0.001);
+      value = (value * 0.999)  + (digitalReadFast(_input_pin) * 0.001);
     
     if(value < 0.5) return this->read_byte();
   }  
@@ -320,7 +327,7 @@ uint8_t PJON_ASK::read_byte() {
     unsigned long time = micros();
     float value = 0.5;
     while(micros() - time < BIT_WIDTH)
-      value = ((value * 0.999) + (digitalRead(_input_pin) * 0.001));
+      value = ((value * 0.999) + (digitalReadFast(_input_pin) * 0.001));
       
     byte_value += (value > 0.5) << i;
   }
