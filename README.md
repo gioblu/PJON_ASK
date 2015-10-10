@@ -76,14 +76,13 @@ I don't think VirtualWire is clear, efficient and understandable enough to be th
 The first step is the physical layer. The suggested antenna if you have space available is a 69cm dipole antenna for both transmitter and receiver module:
 ```cpp  
        
-              345mm                    345mm
-   -------------------------|-------------------------
-                          __|__
-                         |  O  |
-                         |_____|
+        345mm                    345mm                  345mm                    345mm
+   -------------------|--------------------        -------------------|--------------------
+                    __|__                                          ___|________
+                   | tx  |                                        | rx         |
+                   |_____|                                        |____________|
                        
 ```
-
 
 Lets start coding, instantiate the `PJON` object that in the example is called network. To initialize a network based on PJON you need only to define the reception and transmission pin (any free digital pin on your board) where ASK receiver and transmitter are connected and a unique ID (0 - 255):
 
