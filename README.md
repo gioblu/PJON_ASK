@@ -73,7 +73,17 @@ I don't think VirtualWire is clear, efficient and understandable enough to be th
 
 
 ## How to start
-The first step is the physical layer. Lets wire the two arduinos. Simply find a piece of wire and select a digital pin you want to use on both boards where to connect the receiver's and transmitter's pin. After this you should have both arduino boards connected by the wires to both transmitter and receiver module.
+The first step is the physical layer. The suggested antenna if you have space available is a 69cm dipole antenna for both transmitter and receiver module:
+```cpp  
+       
+              345mm                    345mm
+   -------------------------|-------------------------
+                          __|__
+                         |  O  |
+                         |_____|
+                       
+```
+
 
 Lets start coding, instantiate the `PJON` object that in the example is called network. To initialize a network based on PJON you need only to define the reception and transmission pin (any free digital pin on your board) where ASK receiver and transmitter are connected and a unique ID (0 - 255):
 
@@ -92,17 +102,6 @@ On the other side if you have only the receiver module:
 ```
 
 Take in consideration that in simplex mode is impossible to know if the receiver got the right message. This happens because you don't have on the transmitter side a receiver module able to hear the `ACK`, for this reason if one of the pins are `NOT_USED` PJON_ASK runs in simplex mode not sending `ACK` and not checking if the channel is used.
-
-The suggested antenna if you have space available is a 69cm dipole antenna for both transmitter and receiver module:
-```cpp  
-       
-              345mm                    345mm
-   -------------------------|-------------------------
-                          __|__
-                         |  O  |
-                         |_____|
-                       
-```
 
 
 ## Transmit data
