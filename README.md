@@ -8,7 +8,7 @@ PJON (Padded Jittering Operative Network) is an opensource multi-master communic
 
 ```cpp  
 #include <PJON_ASK.h>     // Transmitter board code
-PJON network(11, 12, 45); // receiver to pin 11, transmitter to pin 12, device id 45
+PJON_ASK network(11, 12, 45); // receiver to pin 11, transmitter to pin 12, device id 45
 
 void setup() {
   network.send(44, "B", 1, 1000000); 
@@ -22,7 +22,7 @@ void loop() {
 /* ---------------------------------------------------------------------------- */
 
 #include <PJON_ASK.h>     // Receiver board code
-PJON network(11, 12, 44); // receiver to pin 11, transmitter to pin 12, device id 44
+PJON_ASK network(11, 12, 44); // receiver to pin 11, transmitter to pin 12, device id 44
 
 void setup() {
   network.set_receiver(receiver_function); // Set the function used to receive messages
@@ -84,20 +84,20 @@ The first step is the physical layer. The suggested antenna if you have space av
                        
 ```
 
-Lets start coding, instantiate the `PJON` object that in the example is called network. To initialize a network based on PJON you need only to define the reception and transmission pin (any free digital pin on your board) where ASK receiver and transmitter are connected and a unique ID (0 - 255):
+Lets start coding, instantiate the `PJON_ASK` object that in the example is called network. To initialize a network based on PJON_ASK you need only to define the reception and transmission pin (any free digital pin on your board) where ASK receiver and transmitter are connected and a unique ID (0 - 255):
 
 ```cpp  
-  PJON network(11, 12, 123); 
+  PJON_ASK network(11, 12, 123); 
 ```
 
 If you have only the transmitter on a board and the receiver on anotherone, you transmit in simplex mode. You should pass  `NOT_USED` instead of the receiver pin:
 ```cpp  
-  PJON network(NOT_USED, 12, 123); 
+  PJON_ASK network(NOT_USED, 12, 123); 
 ```
 
 On the other side if you have only the receiver module:
 ```cpp  
-  PJON network(12, NOT_USED, 123); 
+  PJON_ASK network(12, NOT_USED, 123); 
 ```
 
 Take in consideration that in simplex mode is impossible to know if the receiver got the right message. This happens because you don't have on the transmitter side a receiver module able to hear the `ACK`, for this reason if one of the pins are `NOT_USED` PJON_ASK runs in simplex mode not sending `ACK` and not checking if the channel is used.
@@ -186,7 +186,7 @@ static void error_handler(uint8_t code, uint8_t data) {
     Serial.println(data);
     Serial.println("Possible wrong network configuration!");
     Serial.println("For high complexity networks higher MAX_PACKETS over 10.");
-    Serial.println("See in PJON.h");
+    Serial.println("See in PJON_ASK.h");
   }
   if(code == MEMORY_FULL) {
     Serial.println("Packet memory allocation failed. Memory is full.");
