@@ -1,7 +1,7 @@
-#include <PJON.h>
+#include <PJON_ASK.h>
 
 // network(Arduino pin used, selected device id)
-PJON network(11, 12, 45);
+PJON_ASK network(11, 12, 45);
 
 void setup() {
   // Send B to device 44 every second
