@@ -321,7 +321,7 @@ int PJON_ASK::receive_byte() {
 
   /* Update pin value until the pin stops to be HIGH or passed more time than
      BIT_SPACER duration (freak condition used to avoid micros() overflow bug) */
-  while(!(micros() - time > BIT_SPACER && digitalReadFast(_input_pin)))
+  while(!(micros() - time > BIT_SPACER) && digitalReadFast(_input_pin))
     value = (value * 0.999)  + (digitalReadFast(_input_pin) * 0.001);
 
   /* Save how much time passed */
