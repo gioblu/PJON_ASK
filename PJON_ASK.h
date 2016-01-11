@@ -15,10 +15,10 @@
  | BIT_WIDTH 350 | BIT_SPACER 750 |                                                 |
  |----------------------------------------------------------------------------------|
  |Transfer speed:  256 B/s    | Absolute bandwidth:  256   B/s                      |
- |Baud rate:      2564 baud   | Data throughput:     212   B/s                      |                                |
- |__________________________________________________________________________________| 
- 
- 
+ |Baud rate:      2564 baud   | Data throughput:     212   B/s                      |
+ |__________________________________________________________________________________|
+
+
 Copyright (c) 2012-2015, Giovanni Blu Mitolo All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -38,11 +38,11 @@ modification, are permitted provided that the following conditions are met:
    names of its contributors may be used to endorse or promote products
    derived from this software without specific prior written permission.
 
-This software is provided by the copyright holders and contributors "as is" and any express or implied warranties, including, 
-but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event 
-shall the copyright holder or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential 
-damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business 
-interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence 
+This software is provided by the copyright holders and contributors "as is" and any express or implied warranties, including,
+but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event
+shall the copyright holder or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential
+damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence
 or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.  */
 
 #ifndef PJON_ASK_h
@@ -51,11 +51,11 @@ or otherwise) arising in any way out of the use of this software, even if advise
   #include "includes/digitalWriteFast.h"
   #include "Arduino.h"
 
-  /* The following constants setup is quite conservative and determined only 
-     with a huge amount of time and blind testing (without oscilloscope) 
+  /* The following constants setup is quite conservative and determined only
+     with a huge amount of time and blind testing (without oscilloscope)
      tweaking values and analysing results. Theese can be changed to obtain
-     faster speed. Probably you need experience, time and an oscilloscope. */ 
-  
+     faster speed. Probably you need experience, time and an oscilloscope. */
+
   #define BIT_WIDTH 350
   #define BIT_SPACER 750
 #endif
@@ -73,10 +73,10 @@ or otherwise) arising in any way out of the use of this software, even if advise
 // Errors
 #define CONNECTION_LOST 101
 #define PACKETS_BUFFER_FULL 102
-#define MEMORY_FULL 103 
+#define MEMORY_FULL 103
 
 // Maximum sending attempts before throwing CONNECTON_LOST error
-#define MAX_ATTEMPTS 250 
+#define MAX_ATTEMPTS 250
 
 // Packets buffer length, if full PACKET_BUFFER_FULL error is thrown
 #define MAX_PACKETS 10
@@ -114,7 +114,7 @@ class PJON_ASK {
     void send_byte(uint8_t b);
     int  send_string(uint8_t ID, char *string, uint8_t length);
     int  send(uint8_t ID, char *packet, uint8_t length, unsigned long timing = 0);
-    
+
     void update();
     void remove(int id);
 

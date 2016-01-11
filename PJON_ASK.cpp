@@ -15,9 +15,9 @@
  | BIT_WIDTH 350 | BIT_SPACER 750 |                                                 |
  |----------------------------------------------------------------------------------|
  |Transfer speed:  256 B/s    | Absolute bandwidth:  256   B/s                      |
- |Baud rate:      2564 baud   | Data throughput:     212   B/s                      |                                |
- |__________________________________________________________________________________| 
- 
+ |Baud rate:      2564 baud   | Data throughput:     212   B/s                      |
+ |__________________________________________________________________________________|
+
 Copyright (c) 2012-2015, Giovanni Blu Mitolo All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -37,11 +37,11 @@ modification, are permitted provided that the following conditions are met:
    names of its contributors may be used to endorse or promote products
    derived from this software without specific prior written permission.
 
-This software is provided by the copyright holders and contributors "as is" and any express or implied warranties, including, 
-but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event 
-shall the copyright holder or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential 
-damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business 
-interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence 
+This software is provided by the copyright holders and contributors "as is" and any express or implied warranties, including,
+but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event
+shall the copyright holder or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential
+damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business
+interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence
 or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage. */
 
 #include "PJON_ASK.h"
@@ -66,17 +66,17 @@ PJON_ASK::PJON_ASK(int input_pin,int output_pin, uint8_t device_id) {
 }
 
 
-/* Pass as a parameter a static void function you previously defined in your code. 
-   This will be called when a correct message will be received. 
-   Inside there you can code how to react when data is received. 
-  
+/* Pass as a parameter a static void function you previously defined in your code.
+   This will be called when a correct message will be received.
+   Inside there you can code how to react when data is received.
+
    static void receiver_function(uint8_t sender_id, uint8_t length, uint8_t *payload) {
     Serial.print(sender_id);
     Serial.print(" ");
 
-    for(int i = 0; i < length; i++) 
+    for(int i = 0; i < length; i++)
       Serial.print((char)payload[i]);
-      
+
     Serial.print(" ");
     Serial.println(length);
   };
@@ -89,7 +89,7 @@ void PJON_ASK::set_receiver(receiver r) {
 
 
 /* Pass as a parameter a static void function you previously defined in your code.
-   This will be called when an error in communication occurs 
+   This will be called when an error in communication occurs
 
 static void error_handler(uint8_t code, uint8_t data) {
   Serial.print(code);
@@ -140,8 +140,8 @@ void PJON_ASK::send_bit(uint8_t VALUE, int duration) {
  PJON_ASK uses a couple of padding bits before every byte.
  This helps two devices to be syncronized back every byte
  and so have a stable and almost errorless communication link.
- The receiver, reading the initial two padding bits, before 
- recording the incoming byte, can detect (at byte level) if 
+ The receiver, reading the initial two padding bits, before
+ recording the incoming byte, can detect (at byte level) if
  the syncronization failed or interference destroyed the message. */
 
 void PJON_ASK::send_byte(uint8_t b) {
@@ -195,39 +195,41 @@ int PJON_ASK::send_string(uint8_t ID, char *string, uint8_t length) {
   digitalWriteFast(_output_pin, LOW);
 
   if(ID == BROADCAST || _simplex) return ACK;
-  
+
   unsigned long time = micros();
   int response = FAIL;
 
-  while(response == FAIL && micros() - time <= BIT_SPACER + BIT_WIDTH)
+  /* Receive byte for an initial BIT_SPACER bit + standard bit total duration.
+     (freak condition used to avoid micros() overflow bug) */
+  while(response == FAIL && !(micros() - time >= BIT_SPACER + BIT_WIDTH))
     response = this->receive_byte();
 
   if (response == ACK || response == NAK) return response;
-  
+
   return FAIL;
 };
 
 
 /* Insert a packet in the send list:
 
- The added packet will be sent in the next update() call. 
- Using the variable timing is possible to set the delay between every 
+ The added packet will be sent in the next update() call.
+ Using the variable timing is possible to set the delay between every
  transmission cyclically sending the packet (use remove() function stop it)
 
- int hi = network.send(99, "HI!", 1000000); // Send hi every second  
+ int hi = network.send(99, "HI!", 1000000); // Send hi every second
    _________________________________________________________________________
   |           |        |         |       |          |        |              |
   | device_id | length | content | state | attempts | timing | registration |
-  |___________|________|_________|_______|__________|________|______________| */ 
+  |___________|________|_________|_______|__________|________|______________| */
 
 int PJON_ASK::send(uint8_t ID, char *packet, uint8_t length, unsigned long timing) {
   char *str = (char *) malloc(length);
-  
+
   if(str == NULL) {
     this->_error(MEMORY_FULL, FAIL);
     return FAIL;
   }
-     
+
   memcpy(str, packet, length);
 
   for(uint8_t i = 0; i < MAX_PACKETS; i++)
@@ -248,18 +250,18 @@ int PJON_ASK::send(uint8_t ID, char *packet, uint8_t length, unsigned long timin
 }
 
 
-/* Update the state of the send list and so 
-   check if there are packets to send or erase 
-   the correctly delivered */ 
+/* Update the state of the send list and so
+   check if there are packets to send or erase
+   the correctly delivered */
 
 void PJON_ASK::update() {
   for(uint8_t i = 0; i < MAX_PACKETS; i++) {
     if(packets[i].state != NULL)
-      if(micros() - packets[i].registration > packets[i].timing + pow(packets[i].attempts, 2)) 
-        packets[i].state = send_string(packets[i].device_id, packets[i].content, packets[i].length); 
+      if(micros() - packets[i].registration > packets[i].timing + pow(packets[i].attempts, 2))
+        packets[i].state = send_string(packets[i].device_id, packets[i].content, packets[i].length);
 
     if(packets[i].state == ACK) {
-      if(!packets[i].timing)  
+      if(!packets[i].timing)
         this->remove(i);
       else {
         packets[i].attempts = 0;
@@ -267,9 +269,9 @@ void PJON_ASK::update() {
         packets[i].state = TO_BE_SENT;
       }
     }
-    if(packets[i].state == FAIL) { 
+    if(packets[i].state == FAIL) {
       packets[i].attempts++;
-  
+
       if(packets[i].attempts > MAX_ATTEMPTS) {
         this->_error(CONNECTION_LOST, packets[i].device_id);
         if(!packets[i].timing)
@@ -282,6 +284,7 @@ void PJON_ASK::update() {
       }
     }
   }
+  /* Necessary delay - Further study needed to clarify its necessity. */
   delay(2);
 }
 
@@ -300,15 +303,15 @@ void PJON_ASK::remove(int id) {
 /* Check if a byte is coming from the pin:
 
  This function is looking for padding bits before a byte.
- If value is 1 for more then ACCEPTANCE and after 
+ If value is 1 for more then ACCEPTANCE and after
  that comes a 0 probably a byte is coming:
   ________
  |  Init  |
  |--------|
  |_____   |
  |  |  |  |
- |1 |  |0 |  
- |__|__|__| 
+ |1 |  |0 |
+ |__|__|__|
     |
   ACCEPTANCE */
 
@@ -316,20 +319,26 @@ int PJON_ASK::receive_byte() {
   float value = 0.5;
   unsigned long time = micros();
 
-
-  while(micros() - time < BIT_SPACER && digitalReadFast(_input_pin))
+  /* Update pin value until the pin stops to be HIGH or passed more time than
+     BIT_SPACER duration (freak condition used to avoid micros() overflow bug) */
+  while(!(micros() - time > BIT_SPACER && digitalReadFast(_input_pin)))
     value = (value * 0.999)  + (digitalReadFast(_input_pin) * 0.001);
 
+  /* Save how much time passed */
   time = micros();
 
+  /* If pin value is in average more than 0.5, is a 1, and if is more than
+     ACCEPTANCE (a minimum HIGH duration) and what is coming after is a LOW bit
+     probably a byte is coming so try to receive it. */
   if(value > 0.5) {
     value = 0.5;
 
-    while(micros() - time < BIT_WIDTH)
+    /* (freak condition used to avoid micros() overflow bug) */
+    while(!(micros() - time > BIT_WIDTH))
       value = (value * 0.999)  + (digitalReadFast(_input_pin) * 0.001);
-    
+
     if(value < 0.5) return this->read_byte();
-  }  
+  }
   return FAIL;
 }
 
@@ -338,13 +347,14 @@ int PJON_ASK::receive_byte() {
 
 uint8_t PJON_ASK::read_byte() {
   uint8_t byte_value = B00000000;
-  
+
   for(uint8_t i = 0; i < 8; i++) {
     unsigned long time = micros();
     float value = 0.5;
-    while(micros() - time < BIT_WIDTH)
+    /* (freak condition used to avoid micros() overflow bug) */
+    while(!(micros() - time > BIT_WIDTH))
       value = ((value * 0.999) + (digitalReadFast(_input_pin) * 0.001));
-      
+
     byte_value += (value > 0.5) << i;
   }
   return byte_value;
@@ -400,11 +410,11 @@ int PJON_ASK::receive() {
 int PJON_ASK::receive(unsigned long duration) {
   int response;
   long time = micros();
-  while(micros() - time <= duration)
-    for(int i = 0; i < 3706; i++) {
+  /* (freak condition used to avoid micros() overflow bug) */
+  while(!(micros() - time >= duration)) {
       response = this->receive();
       if(response == ACK) {
-        this->_receiver(data[1] - 3, data + 2); 
+        this->_receiver(data[1] - 3, data + 2);
         return ACK;
       }
     }
