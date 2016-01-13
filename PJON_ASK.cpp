@@ -5,8 +5,8 @@
    |y"s§+`\     Giovanni Blu Mitolo 2012 - 2015
   /so+:-..`\    gioscarab@gmail.com
   |+/:ngr-*.`\
-  |5/:%&-a3f.:;\     PJON_ASK is a device communications bus system that connects up to 255
-  \+//u/+g%{osv,,\    arduino boards over one wire up to 5.29kB/s data communication speed.
+  |5/:%&-a3f.:;\     PJON_ASK is a device communications bus system wireless implementation
+  \+//u/+g%{osv,,\    that connects up to 255 arduino boards up to 256B/s.
     \=+&/osw+olds.\\   Contains acknowledge, collision detection, CRC and encpryption all done
        \:/+-.-°-:+oss\  with micros() and delayMicroseconds(), with no use of interrupts or timers.
         | |       \oy\\  Pull down resistor on the bus is generally used to reduce interference.
@@ -389,6 +389,7 @@ int PJON_ASK::receive() {
       this->send_byte(ACK);
       digitalWriteFast(_input_pin, LOW);
     }
+    this->_receiver(data[1] - 3, data + 2);
     return ACK;
   } else {
     if(data[0] != BROADCAST && !_simplex) {
@@ -401,22 +402,16 @@ int PJON_ASK::receive() {
 }
 
 
-/* Try to receive a string from the pin repeatedly:
- receive() is executed in cycle with a for because is
- not possible to use micros() as condition (too long to be executed).
- micros() is then used in while as condition approximately every
- 10 milliseconds (3706 value in for determines duration) */
+/* Try to receive a string from the pin repeatedly: */
 
 int PJON_ASK::receive(unsigned long duration) {
   int response;
   long time = micros();
   /* (freak condition used to avoid micros() overflow bug) */
   while(!(micros() - time >= duration)) {
-      response = this->receive();
-      if(response == ACK) {
-        this->_receiver(data[1] - 3, data + 2);
-        return ACK;
-      }
-    }
+    response = this->receive();
+    if(response == ACK)
+      return ACK;
+  }
   return response;
 }
