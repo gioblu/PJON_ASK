@@ -2,7 +2,7 @@ PJON_ASK v1.0 stable
 ==== 
  
 Arduino compatible implementation of PJON for ASK 433Mhz radio modules:
-![alt tag](http://img.banggood.com/images/upload/2012/chenjianwei/SKU064487.5.jpg)
+![alt tag](http://g03.a.alicdn.com/kf/HTB1iEk4IXXXXXc5XXXXq6xXFXXXw/15sets-lot-433MHz-ASK-module-kit-STX882-SRX882-2-pcs-nickel-plated-spring-antenna-.jpg)
 
 PJON (Padded Jittering Operative Network) is an opensource multi-master communication bus system standard. Its 433Mhz radio implementation, PJON_ASK, can be a valid alternative to VirtualWire library (generally used for data transmission with this modules). With PJON_ASK you have a real wireless network with up to 255 indexed devices communicating through packets in half-duplex or simplex mode with CRC error detection and correct reception acknowledge. If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki). 
 
