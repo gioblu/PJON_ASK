@@ -68,7 +68,6 @@ or otherwise) arising in any way out of the use of this software, even if advise
 #define TO_BE_SENT 74
 
 #define NOT_USED 9999
-#define BIT_SPACER_READINGS 5
 
 // Errors
 #define CONNECTION_LOST 101
@@ -102,7 +101,12 @@ static void dummy_error_handler(uint8_t code, uint8_t data) {};
 class PJON_ASK {
 
   public:
-    PJON_ASK(int input_pin, int output_pin, uint8_t ID);
+    PJON_ASK(uint8_t input_pin, uint8_t output_pin, uint8_t device_id);
+    PJON_ASK(uint8_t input_pin, uint8_t output_pin);
+
+    void initialize(uint8_t input_pin, uint8_t output_pin);
+
+    void set_id(uint8_t id);
     void set_receiver(receiver r);
     void set_error(error e);
 

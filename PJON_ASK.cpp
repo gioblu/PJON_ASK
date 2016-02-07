@@ -6,10 +6,10 @@
   /so+:-..`\    gioscarab@gmail.com
   |+/:ngr-*.`\
   |5/:%&-a3f.:;\     PJON_ASK is a device communications bus system wireless implementation
-  \+//u/+g%{osv,,\    that connects up to 255 arduino boards up to 256B/s.
-    \=+&/osw+olds.\\   Contains acknowledge, collision detection, CRC and encpryption all done
-       \:/+-.-°-:+oss\  with micros() and delayMicroseconds(), with no use of interrupts or timers.
-        | |       \oy\\  Pull down resistor on the bus is generally used to reduce interference.
+  \+//u/+g%{osv,,\    that connects up to 255 arduino boards up to 256B/s in multi-master configuration.
+    \=+&/osw+olds.\\   Contains acknowledge, collision detection, CRC all done with micros()
+       \:/+-.-°-:+oss\  and delayMicroseconds(), with no use of interrupts or timers.
+        | |       \oy\\  Cheap 433Mhz TX/RX kit suggested as wirelles communication medium.
         > <
   _____-| |-________________________________________________________________________
  | BIT_WIDTH 350 | BIT_SPACER 750 |                                                 |
@@ -18,44 +18,64 @@
  |Baud rate:      2564 baud   | Data throughput:     212   B/s                      |
  |__________________________________________________________________________________|
 
-Copyright (c) 2012-2015, Giovanni Blu Mitolo All rights reserved.
+ Copyright (c) 2012-2015, Giovanni Blu Mitolo All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-- Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+ - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
 
--  Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
+ -  Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
 
--  All advertising materials mentioning features or use of this software
-   must display the following acknowledgement:
-   This product includes PJON_ASK software developed by Giovanni Blu Mitolo.
+ -  All advertising materials mentioning features or use of this software
+    must display the following acknowledgement:
+    This product includes PJON_ASK software developed by Giovanni Blu Mitolo.
 
--  Neither the name of PJON, PJON_ASK nor the
-   names of its contributors may be used to endorse or promote products
-   derived from this software without specific prior written permission.
+ -  Neither the name of PJON, PJON_ASK nor the
+    names of its contributors may be used to endorse or promote products
+    derived from this software without specific prior written permission.
 
-This software is provided by the copyright holders and contributors "as is" and any express or implied warranties, including,
-but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event
-shall the copyright holder or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential
-damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business
-interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence
-or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage. */
+ This software is provided by the copyright holders and contributors"as is"
+ and any express or implied warranties, including, but not limited to, the
+ implied warranties of merchantability and fitness for a particular purpose
+ are disclaimed. In no event shall the copyright holder or contributors be
+ liable for any direct, indirect, incidental, special, exemplary, or consequential
+ damages (including, but not limited to, procurement of substitute goods or services;
+ loss of use, data, or profits; or business interruption) however caused and on any
+ theory of liability, whether in contract, strict liability, or tort (including
+ negligence or otherwise) arising in any way out of the use of this software, even if
+ advised of the possibility of such damage. */
 
 #include "PJON_ASK.h"
 
-/* Initiate PJON_ASK passing pin number and the selected device_id  */
+/* Initiate PJON passing pin number:
+   Device's id has to be set through set_id()
+   before transmitting on the PJON network.  */
 
-PJON_ASK::PJON_ASK(int input_pin,int output_pin, uint8_t device_id) {
+PJON_ASK::PJON_ASK(uint8_t input_pin, uint8_t output_pin) {
+  this->initialize(input_pin, output_pin);
+}
+
+
+/* Initiate PJON passing pin number and the device's id: */
+
+PJON_ASK::PJON_ASK(uint8_t input_pin, uint8_t output_pin, uint8_t device_id) {
+  _device_id = device_id;
+  this->initialize(input_pin, output_pin);
+}
+
+
+/* Initialization tasks: */
+
+void PJON_ASK::initialize(uint8_t input_pin, uint8_t output_pin) {
   _input_pin = input_pin;
   _output_pin = output_pin;
 
   if(input_pin == NOT_USED || output_pin == NOT_USED)
     _simplex = true;
 
-  _device_id = device_id;
   this->set_error(dummy_error_handler);
 
   for(int i = 0; i < MAX_PACKETS; i++) {
@@ -66,11 +86,18 @@ PJON_ASK::PJON_ASK(int input_pin,int output_pin, uint8_t device_id) {
 }
 
 
-/* Pass as a parameter a static void function you previously defined in your code.
+/* Set the device id, passing a single byte (watch out to id collision) */
+
+void PJON_ASK::set_id(uint8_t device_id) {
+  _device_id = device_id;
+}
+
+
+/* Pass as a parameter a void function you previously defined in your code.
    This will be called when a correct message will be received.
    Inside there you can code how to react when data is received.
 
-   static void receiver_function(uint8_t sender_id, uint8_t length, uint8_t *payload) {
+    void receiver_function(uint8_t length, uint8_t *payload) {
     Serial.print(sender_id);
     Serial.print(" ");
 
@@ -128,21 +155,23 @@ void PJON_ASK::send_bit(uint8_t VALUE, int duration) {
 }
 
 
-/* Send a byte to the pin:
-  ________ _______________________
- |  Init  |         Byte          |
- |--------|-----------------------|
- |_____   |__       __    __ __   |
- |     |  |  |     |  |  |     |  |
- |1    |0 |1 |0  0 |1 |0 |1  1 |0 |
- |_____|__|__|__ __|__|__|_____|__|
+/* Every byte is prepended with 2 synchronization padding bits. The first
+   is a longer than standard logic 1 followed by a standard logic 0.
+   __________ ___________________________
+  | SyncPad  | Byte                      |
+  |______    |___       ___     _____    |
+  | |    |   |   |     |   |   |     |   |
+  | | 1  | 0 | 1 | 0 0 | 1 | 0 | 1 1 | 0 |
+  |_|____|___|___|_____|___|___|_____|___|
+    |
+   ACCEPTANCE
 
- PJON_ASK uses a couple of padding bits before every byte.
- This helps two devices to be syncronized back every byte
- and so have a stable and almost errorless communication link.
- The receiver, reading the initial two padding bits, before
- recording the incoming byte, can detect (at byte level) if
- the syncronization failed or interference destroyed the message. */
+The reception tecnique is based on finding a logic 1 as long as the
+first padding bit within a certain threshold, synchronizing to its
+falling edge and checking if it is followed by a logic 0. If this
+pattern is recognised, reception starts, if not, interference,
+synchronization loss or simply absence of communication is
+detected at byte level. */
 
 void PJON_ASK::send_byte(uint8_t b) {
   digitalWriteFast(_output_pin, HIGH);
@@ -157,20 +186,25 @@ void PJON_ASK::send_byte(uint8_t b) {
 }
 
 
-/* Send a string to the pin:
+/* An Example of how the string "@" is formatted and sent:
 
- An Example of how the string "HI" is formatted and sent:
-  _____    ____________________________________       _____
- | C-A |  | ID | LENGTH | byte0 | byte1  | CRC |     | ACK |
- |-----|->|----|--------|-------|--------|-----|-> <-|-----|
- |  0  |  | 12 |   6    |   H   |   I    | 134 |     |  6  |
- |_____|  |____|________|_______|________|_____|     |_____|
+ ID 12            LENGTH 4         CONTENT 64       CRC 130
+ ________________ ________________ ________________ __________________
+|Sync | Byte     |Sync | Byte     |Sync | Byte     |Sync | Byte       |
+|___  |     __   |___  |      _   |___  |  _       |___  |  _      _  |
+|   | |    |  |  |   | |     | |  |   | | | |      |   | | | |    | | |
+| 1 |0|0000|11|00| 1 |0|00000|1|00| 1 |0|0|1|000000| 1 |0|0|1|0000|1|0|
+|___|_|____|__|__|___|_|_____|_|__|___|_|_|_|______|___|_|_|_|____|_|_|
 
- C-A:    Collision avoidance: receive a byte, if no 1s channel is free  - 1 byte
- ID:     Receiver ID                                                    - 1 byte
- LENGTH: Length of the string (max 255 characters)                      - 1 byte
- CRC:    Cyclic redundancy check                                        - 1 byte
- ACK:    Acknowledge sent from receiver                                 - 1 byte */
+A standard packet transmission is a bidirectional communication between
+two devices that can be divided in 3 different phases:
+
+Channel analysis   Transmission                            Response
+    _____           _____________________________           _____
+   | C-A |         | ID | LENGTH | CONTENT | CRC |         | ACK |
+<--|-----|---------|----|--------|---------|-----|--> <----|-----|
+   |  0  |         | 12 |   4    |   64    | 130 |         |  6  |
+   |_____|         |____|________|_________|_____|         |_____|  */
 
 int PJON_ASK::send_string(uint8_t ID, char *string, uint8_t length) {
   if (!*string) return FAIL;
@@ -211,12 +245,11 @@ int PJON_ASK::send_string(uint8_t ID, char *string, uint8_t length) {
 
 
 /* Insert a packet in the send list:
-
  The added packet will be sent in the next update() call.
- Using the variable timing is possible to set the delay between every
+ Using the timing parameter you can set the delay between every
  transmission cyclically sending the packet (use remove() function stop it)
 
- int hi = network.send(99, "HI!", 1000000); // Send hi every second
+ int hi = network.send(99, "HI!", 3, 1000000); // Send hi every second
    _________________________________________________________________________
   |           |        |         |       |          |        |              |
   | device_id | length | content | state | attempts | timing | registration |
@@ -284,8 +317,6 @@ void PJON_ASK::update() {
       }
     }
   }
-  /* Necessary delay - Further study needed to clarify its necessity. */
-  delay(2);
 }
 
 
@@ -301,9 +332,8 @@ void PJON_ASK::remove(int id) {
 }
 
 /* Check if a byte is coming from the pin:
-
  This function is looking for padding bits before a byte.
- If value is 1 for more then ACCEPTANCE and after
+ If value is 1 for more than ACCEPTANCE and after
  that comes a 0 probably a byte is coming:
   ________
  |  Init  |
@@ -364,13 +394,14 @@ uint8_t PJON_ASK::read_byte() {
 /* Try to receive a string from the pin: */
 
 int PJON_ASK::receive() {
+  int state;
   int package_length = PACKET_MAX_LENGTH;
   uint8_t CRC = 0;
 
-  for (uint8_t i = 0; i <= package_length; i++) {
-    data[i] = this->receive_byte();
+  for (uint8_t i = 0; i < package_length; i++) {
+    data[i] = state = this->receive_byte();
 
-    if (data[i] == FAIL) return FAIL;
+    if (state == FAIL) return FAIL;
 
     if(i == 0 && data[i] != _device_id && data[i] != BROADCAST)
       return BUSY;
