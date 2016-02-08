@@ -1,17 +1,17 @@
 PJON_ASK v1.0 stable
-==== 
- 
+====
+
 Arduino compatible implementation of PJON for ASK 433Mhz radio modules, for example SRX882 and STX882:
 ![alt tag](http://g03.a.alicdn.com/kf/HTB1iEk4IXXXXXc5XXXXq6xXFXXXw/15sets-lot-433MHz-ASK-module-kit-STX882-SRX882-2-pcs-nickel-plated-spring-antenna-.jpg)
 
-PJON (Padded Jittering Operative Network) is an opensource multi-master communication bus system standard. Its 433Mhz radio implementation, PJON_ASK, can be a valid alternative to VirtualWire library (generally used for data transmission with this modules). With PJON_ASK you have a real wireless network with up to 255 indexed devices communicating through packets in half-duplex or simplex mode with CRC error detection and correct reception acknowledge. If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki). 
+PJON (Padded Jittering Operative Network) is an opensource multi-master communication bus system standard. Its 433Mhz radio implementation, PJON_ASK, can be a valid alternative to VirtualWire library (generally used for data transmission with this modules). With PJON_ASK you have a real wireless network with up to 255 indexed devices communicating through packets in half-duplex or simplex mode with CRC error detection and correct reception acknowledge. If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki).
 
 ```cpp  
 #include <PJON_ASK.h>     // Transmitter board code
 PJON_ASK network(11, 12, 45); // receiver to pin 11, transmitter to pin 12, device id 45
 
 void setup() {
-  network.send(44, "B", 1, 1000000); 
+  network.send(44, "B", 1, 1000000);
   // Send to device 44, "B" content of 1 byte length every 1000000 microseconds (1 second)
 }
 
@@ -29,7 +29,7 @@ void setup() {
 };
 
 static void receiver_function(uint8_t length, uint8_t *payload) {
-  if(payload[0] == 'B') { // If the first letter of the received message is B 
+  if(payload[0] == 'B') { // If the first letter of the received message is B
     digitalWrite(13, HIGH);
     delay(30);
     digitalWrite(13, LOW);
@@ -42,19 +42,19 @@ void loop() {
 ```
 
 ####Features
-- ASK 315/433Mhz cheap transceiver implementation (200m range in urban environment) 
-- Works with both simplex and half duplex setup. 
+- ASK 315/433Mhz cheap transceiver implementation (200m range in urban environment)
+- Works with both simplex and half duplex setup.
 - Device id implementation to enable univocal communication up to 254 devices.  
 - Cyclic Redundancy Check (CRC).
-- Acknowledgement of correct packet sending. 
+- Acknowledgement of correct packet sending.
 - Collision avoidance to enable multi-master capability.
 - Broadcast functionality to contact all connected devices.
 - Packet manager to track and retransmit failed packet sendings in background.
 - Error handling.
 
 ####Performance
-- Transfer speed: **256 B/s** or **2564 Baud** 
-- Data throughput: **216 B/s** 
+- Transfer speed: **202 B/s** or **1620 Baud**
+- Data throughput: **150 B/s**
 - Accuracy: **99.995%**
 - Range: **200 meters** in urban environment (still not tested with LOS in open air)
 
@@ -75,29 +75,29 @@ I don't think VirtualWire is clear, efficient and understandable enough to be th
 ## How to start
 The first step is the physical layer. The suggested antenna if you have space available is a 69cm dipole antenna for both transmitter and receiver module:
 ```cpp  
-       
+
         345mm                    345mm                  345mm                    345mm
    -------------------|--------------------        -------------------|--------------------
                     __|__                                          ___|________
                    | tx  |                                        | rx         |
                    |_____|                                        |____________|
-                       
+
 ```
 
 Lets start coding, instantiate the `PJON_ASK` object that in the example is called network. To initialize a network based on PJON_ASK you need only to define the reception and transmission pin (any free digital pin on your board) where ASK receiver and transmitter are connected and a unique ID (0 - 255):
 
 ```cpp  
-  PJON_ASK network(11, 12, 123); 
+  PJON_ASK network(11, 12, 123);
 ```
 
 If you have only the transmitter on a board and the receiver on anotherone, you transmit in simplex mode. You should pass  `NOT_USED` instead of the receiver pin:
 ```cpp  
-  PJON_ASK network(NOT_USED, 12, 123); 
+  PJON_ASK network(NOT_USED, 12, 123);
 ```
 
 On the other side if you have only the receiver module:
 ```cpp  
-  PJON_ASK network(12, NOT_USED, 123); 
+  PJON_ASK network(12, NOT_USED, 123);
 ```
 
 Take in consideration that in simplex mode is impossible to know if the receiver got the right message. This happens because you don't have on the transmitter side a receiver module able to hear the `ACK`, for this reason if one of the pins are `NOT_USED` PJON_ASK runs in simplex mode not sending `ACK` and not checking if the channel is used.
@@ -107,7 +107,7 @@ Take in consideration that in simplex mode is impossible to know if the receiver
 Data transmission is handled by a packet manager, the `update()` function has to be called at least once per loop cycle. Consider that this is not an interrupt driven system, all the time dedicated to delays or executing other tasks is postponing the sending of all the packets are scheduled to be sent:
 
 ```cpp  
-  network.update(); 
+  network.update();
 ```
 
 To send a string to another device connected to the bus simply call `send()` function passing the ID you want to contact, the string you want to send and its length:
@@ -115,7 +115,7 @@ To send a string to another device connected to the bus simply call `send()` fun
 ```cpp
 network.send(100, "Ciao, this is a test!", 21);
 ```
-Packet length is there to prevent unwanted buffer overflows. If sending arbitrary values  `NULL` terminator strategy (strlen) is not safe to detect the end of a string. 
+Packet length is there to prevent unwanted buffer overflows. If sending arbitrary values  `NULL` terminator strategy (strlen) is not safe to detect the end of a string.
 
 To send a value repeatedly simply add as last parameter the interval in microseconds you want between every sending:
 
@@ -142,9 +142,9 @@ Now define a `static void function` that will be called if a correct message is 
 static void receiver_function(uint8_t length, uint8_t *payload) {
   Serial.print("Message content: ");
 
-  for(int i = 0; i < length; i++) 
+  for(int i = 0; i < length; i++)
     Serial.print((char)payload[i]);
-  
+
   Serial.print(" | Message length: ");
   Serial.println(length);
 };
@@ -214,7 +214,7 @@ modification, are permitted provided that the following conditions are met:
    notice, this list of conditions and the following disclaimer in the
    documentation and/or other materials provided with the distribution.
 
--  All advertising materials mentioning features or use of this software 
+-  All advertising materials mentioning features or use of this software
    must display the following acknowledgement:
    This product includes PJON_ASK software developed by Giovanni Blu Mitolo.
 
@@ -222,14 +222,13 @@ modification, are permitted provided that the following conditions are met:
    names of its contributors may be used to endorse or promote products
    derived from this software without specific prior written permission.
 
-This software is provided by the copyright holders and contributors"as is" 
-and any express or implied warranties, including, but not limited to, the 
-implied warranties of merchantability and fitness for a particular purpose 
-are disclaimed. In no event shall the copyright holder or contributors be 
-liable for any direct, indirect, incidental, special, exemplary, or consequential 
-damages (including, but not limited to, procurement of substitute goods or services; 
-loss of use, data, or profits; or business interruption) however caused and on any 
-theory of liability, whether in contract, strict liability, or tort (including 
-negligence or otherwise) arising in any way out of the use of this software, even if 
+This software is provided by the copyright holders and contributors"as is"
+and any express or implied warranties, including, but not limited to, the
+implied warranties of merchantability and fitness for a particular purpose
+are disclaimed. In no event shall the copyright holder or contributors be
+liable for any direct, indirect, incidental, special, exemplary, or consequential
+damages (including, but not limited to, procurement of substitute goods or services;
+loss of use, data, or profits; or business interruption) however caused and on any
+theory of liability, whether in contract, strict liability, or tort (including
+negligence or otherwise) arising in any way out of the use of this software, even if
 advised of the possibility of such damage. */
-
