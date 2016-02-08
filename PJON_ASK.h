@@ -12,10 +12,10 @@
         | |       \oy\\  Pull down resistor on the bus is generally used to reduce interference.
         > <
   _____-| |-________________________________________________________________________
- | BIT_WIDTH 350 | BIT_SPACER 750 |                                                 |
+ | BIT_WIDTH 512 | BIT_SPACER 328 |                                                 |
  |----------------------------------------------------------------------------------|
- |Transfer speed:  256 B/s    | Absolute bandwidth:  256   B/s                      |
- |Baud rate:      2564 baud   | Data throughput:     212   B/s                      |
+ |Transfer speed:  202 B/s    | Absolute bandwidth:  202   B/s                      |
+ |Baud rate:      1620 baud   | Data throughput:     150   B/s                      |
  |__________________________________________________________________________________|
 
 
@@ -56,8 +56,8 @@ or otherwise) arising in any way out of the use of this software, even if advise
      tweaking values and analysing results. Theese can be changed to obtain
      faster speed. Probably you need experience, time and an oscilloscope. */
 
-  #define BIT_WIDTH 350
-  #define BIT_SPACER 750
+  #define BIT_WIDTH 512
+  #define BIT_SPACER 328
 #endif
 
 #define ACK  6
