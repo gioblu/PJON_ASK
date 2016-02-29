@@ -6,6 +6,8 @@ PJON_ASK network(11, 12, 44);
 void setup() {
   Serial.begin(9600);
   network.set_receiver(receiver_function);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, LOW);
 };
 
 static void receiver_function(uint8_t length, uint8_t *payload) {
