@@ -73,6 +73,7 @@ or otherwise) arising in any way out of the use of this software, even if advise
 #define CONNECTION_LOST 101
 #define PACKETS_BUFFER_FULL 102
 #define MEMORY_FULL 103
+#define CONTENT_TOO_LONG 104
 
 // Maximum sending attempts before throwing CONNECTON_LOST error
 #define MAX_ATTEMPTS 250
