@@ -257,6 +257,12 @@ int PJON_ASK::send_string(uint8_t ID, char *string, uint8_t length) {
   |___________|________|_________|_______|__________|________|______________| */
 
 int PJON_ASK::send(uint8_t ID, char *packet, uint8_t length, unsigned long timing) {
+  
+  if(length >= PACKET_MAX_LENGTH) {
+    this->_error(CONTENT_TOO_LONG, length);
+    return FAIL;
+  }
+  
   char *str = (char *) malloc(length);
 
   if(str == NULL) {
