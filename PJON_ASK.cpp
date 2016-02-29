@@ -77,6 +77,7 @@ void PJON_ASK::initialize(uint8_t input_pin, uint8_t output_pin) {
     _simplex = true;
 
   this->set_error(dummy_error_handler);
+  this->set_receiver(dummy_receiver_handler);
 
   for(int i = 0; i < MAX_PACKETS; i++) {
     packets[i].state = NULL;
