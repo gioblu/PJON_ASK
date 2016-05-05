@@ -1,0 +1,19 @@
+{
+  "name": "PJON_ASK",
+  "description": "PJON_ASK is a PJON communication bus system implementation over cheap ASK 433Mhz radio transceivers",
+  "keywords": "communication, bus, protocol",
+  "authors":
+  {
+    "name": "Giovanni Blu Mitolo",
+    "email": "gioscarab@gmail.com"
+  },
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/gioblu/PJON_ASK.git"
+  },
+  "version": "1.0",
+  "examples": "examples/*/*/*.ino",
+  "frameworks": "arduino",
+  "platforms":"atmelavr"
+}
