@@ -1,244 +1,52 @@
-PJON_ASK v1.0 stable
-====
+![PJON_ASK](http://www.gioblu.com/PJON/PJON-github-header-tiny.png)
+##PJON_ASK v1.0 stable
+#####Warning: PJON_ASK has been integrated in the PJON repository since v3.0-beta, see [OverSampling](https://github.com/gioblu/PJON/wiki/OverSampling) 
 
-Arduino compatible implementation of PJON for ASK 433Mhz radio modules, for example SRX882 and STX882:
-![alt tag](http://g03.a.alicdn.com/kf/HTB1iEk4IXXXXXc5XXXXq6xXFXXXw/15sets-lot-433MHz-ASK-module-kit-STX882-SRX882-2-pcs-nickel-plated-spring-antenna-.jpg)
+PJON_ASK was an early implementation of the [PJON](https://github.com/gioblu/PJON/wiki) Standard, designed to be compatible with noisy and unreliable media like cheap 315/433Mhz radio transceivers. 
 
-PJON (Padded Jittering Operative Network) is an opensource multi-master communication bus system standard. Its 433Mhz radio implementation, PJON_ASK, can be a valid alternative to VirtualWire / RadioHead library (generally used for data transmission with these modules and Arduino). With PJON_ASK you have a real wireless multimaster network with up to 255 devices with an unique ID in half-duplex or simplex mode with CRC error detection and correct reception acknowledge. If you are interested to know more about the PJON standard, visit the [wiki](https://github.com/gioblu/PJON/wiki).
+####What is PJON?
+PJON (Padded Jittering Operative Network) is an Arduino compatible, multi-master, multi-media communications bus system. It proposes a Standard and it is designed as a framework for digital communication. It is a valid alternative to i2c, 1-Wire, Serial and other Arduino compatible protocols. If you are interested to know more about the PJON Standard, visit the [Wiki](https://github.com/gioblu/PJON/wiki). If you need help see the [documentation](https://github.com/gioblu/PJON/wiki/Documentation) or if something is not working visit the [Troubleshooting page](https://github.com/gioblu/PJON/wiki/Troubleshooting). If you own a Saleae Logic Analyzer see [saleae-pjon-protocol-analyzer](https://github.com/aperepel/saleae-pjon-protocol-analyzer) crafted by Andrew Grande.
 
-```cpp  
-#include <PJON_ASK.h>     // Transmitter board code
-PJON_ASK network(11, 12, 45); // receiver to pin 11, transmitter to pin 12, device id 45
-
-void setup() {
-  network.send(44, "B", 1, 1000000);
-  // Send to device 44, "B" content of 1 byte length every 1000000 microseconds (1 second)
-}
-
-void loop() {
-  network.update();
-}
-
-/* ---------------------------------------------------------------------------- */
-
-#include <PJON_ASK.h>     // Receiver board code
-PJON_ASK network(11, 12, 44); // receiver to pin 11, transmitter to pin 12, device id 44
-
-void setup() {
-  network.set_receiver(receiver_function); // Set the function used to receive messages
-};
-
-static void receiver_function(uint8_t length, uint8_t *payload) {
-  if(payload[0] == 'B') { // If the first letter of the received message is B
-    digitalWrite(13, HIGH);
-    delay(30);
-    digitalWrite(13, LOW);
-  }
-}
-
-void loop() {
-  network.receive(1000);
-}
-```
+[![Join the chat at https://gitter.im/gioblu/PJON](https://badges.gitter.im/gioblu/PJON.svg)](https://gitter.im/gioblu/PJON?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Donate](http://img.shields.io/paypal/donate.png?color=blue)](https://www.paypal.me/PJON)
 
 ####Features
-- ASK 315/433Mhz cheap transceiver implementation (200m range in urban environment)
-- Works with both simplex and half duplex setup.
-- Device id implementation to enable univocal communication up to 254 devices.  
-- Cyclic Redundancy Check (CRC).
-- Acknowledgement of correct packet sending.
-- Collision avoidance to enable multi-master capability.
-- Broadcast functionality to contact all connected devices.
-- Packet manager to track and retransmit failed packet sendings in background.
-- Error handling.
-
-####Performance
-- Transfer speed: **202 B/s** or **1620 Baud**
-- Data throughput: **150 B/s**
-- Accuracy: **99.995%**
-- Range: **250 meters** in urban environment / **3km** with LOS transmitting from a flying balloon
+- Device id implementation to enable univocal communication up to 254 devices  
+- Bus id implementation to optionally enable shared medium communication
+- Multi media compatibility (wires up to 50m, radio up to 5km)
+- Physical layer abstraction
+- 2 pin compatibility to enable twisted pair / radio modules
+- Optional auto-addressing with id collision avoidance (experimental)
+- CRC8 table-less cyclic redundancy check implementation
+- Acknowledgement of correct packet sending
+- Collision avoidance to enable multi-master capability
+- Broadcast functionality to contact all connected devices
+- Packet manager to track and retransmit a failed packet sending in background
+- Error handling
 
 ####Compatibility
-- Arduino Diecimila / Duemilanove
-- Arduino Mini
-- Arduino Uno
-- Arduino Nano
-- Arduino Mega
+- ATmega88/168/328 16Mhz (Diecimila, Duemilanove, Uno, Nano, Mini, Lillypad)
+- ATmega2560 16Mhz (Arduino Mega)
+- ATmega16u4/32u4 16Mhz (Arduino Leonardo)
+- ATtiny45/85 8Mhz, see https://github.com/gioblu/PJON/wiki/ATtiny-interfacing
+- SAMD (Arduino Zero)
+- ESP8266 v.1-7 80Mhz "AI-THINKER AT" firmware, see https://github.com/esp8266/Arduino
+- ESP8266 NodeMCU v0.9-1.0 80Mhz, see https://github.com/esp8266/Arduino
+- MK20DX256 96Mhz (Teensy 3.1)
 
-This library is tested effectively with many versions of the ASK 433Mhz module present on ebay and various other webshops.
-This implementation works with a simple oversampling approach, for this reason works also on wires and other radio modules. If you need communication through wire check the PJON wire implementation [here](https://github.com/gioblu/PJON).
-
-####Why not VirtualWire / RadioHead?
-I don't think VirtualWire is clear, efficient and understandable enough to be the standard library for wireless radio communication available to the community, because of its implementation mess and complexity. Moreover VirtualWire doesn't have the support for multiple devices in multimaster setup, CRC, acknowledge, collision avoidance and packet management. For this reason I wrote this implementation to provide the user with the PJON standard also on wireless. :)
-
-==== 
-
-## How to start
-The first step is the physical layer. The suggested antenna if you have space available is a 69cm dipole antenna for both transmitter and receiver module:
-```cpp  
-
-        345mm                    345mm                  345mm                    345mm
-   -------------------|--------------------        -------------------|--------------------
-                    __|__                                          ___|________
-                   | tx  |                                        | rx         |
-                   |_____|                                        |____________|
-
-```
-
-Lets start coding, instantiate the `PJON_ASK` object that in the example is called network. To initialize a network based on PJON_ASK you need only to define the reception and transmission pin (any free digital pin on your board) where ASK receiver and transmitter are connected and a unique ID (0 - 255):
-
-```cpp  
-  PJON_ASK network(11, 12, 123);
-```
-
-If you have only the transmitter on a board and the receiver on anotherone, you transmit in simplex mode. You should pass  `NOT_USED` instead of the receiver pin:
-```cpp  
-  PJON_ASK network(NOT_USED, 12, 123);
-```
-
-On the other side if you have only the receiver module:
-```cpp  
-  PJON_ASK network(12, NOT_USED, 123);
-```
-
-Take in consideration that in simplex mode is impossible to know if the receiver got the right message. This happens because you don't have on the transmitter side a receiver module able to hear the `ACK`, for this reason if one of the pins are `NOT_USED` PJON_ASK runs in simplex mode not sending `ACK` and not checking if the channel is used.
-
-==== 
-
-#### Transmit data
-Data transmission is handled by a packet manager, the `update()` function has to be called at least once per loop cycle. Consider that this is not an interrupt driven system, all the time dedicated to delays or executing other tasks is postponing the sending of all the packets are scheduled to be sent:
-
-```cpp  
-  network.update(); 
-```
-
-To send a string to another device connected to the bus simply call `send()` function passing the ID you want to contact, the string you want to send and its length:
+####License
 
 ```cpp
-network.send(100, "Ciao, this is a test!", 21);
+/* Copyright 2012-2016 Giovanni Blu Mitolo
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. */
 ```
-I know that the packet length is boring to fill but is there to prevent buffer overflow. If sending arbitrary values `NULL` terminator strategy based on `strlen()` is not safe to detect the end of a string. 
-
-To send a value repeatedly simply add as last parameter the interval in microseconds you want between every sending:
-
-```cpp
-int one_second_delay_test = network.send(100, "Test sent every second!", 23, 1000000);
-```
-
-`one_second_delay_test` contains the id of the packet. If you want to remove this repeated task simply:
-
-```cpp
-network.remove(one_second_delay_test);
-```
-
-To broadcast a message to all connected devices, use the `BROADCAST` constant as recipient ID. 
-
-```cpp
-int broadcastTest = network.send(BROADCAST, "Message for all connected devices.", 34);
-```
-
-==== 
-
-#### Receive data
-Now define a `void function` that will be called if a correct message is received. This function receives 2 parameters: the message length and its content.
-
-```cpp
-void receiver_function(uint8_t length, uint8_t *payload) {
-  Serial.print("Message content: ");
-
-  for(int i = 0; i < length; i++) 
-    Serial.print((char)payload[i]);
-  
-  Serial.print(" | Message length: ");
-  Serial.println(length);
-};
-```
-
-Inform the network to call `receiver_function` when a correct message is received:
-
-```cpp
-network.set_receiver(receiver_function);
-```
-
-To correctly receive data call `receive()` function at least once per loop cycle passing as a parameter, the maximum reception time in microseconds:
-```cpp
-int response = network.receive(1000);
-```
-
-Consider that this is not an interrupt driven system and so all the time passed in delay or executing something a certain amount of packets will be potentially lost unheard. Structure intelligently your loop cycle to avoid huge blind timeframes.
-
-==== 
-
-####Error handling
-PJON is designed to inform the user if an error is detected. A `void function` has to be defined as the error handler, it receives 2 parameters the first is the error code and the second is 1 byte additional data related to the error.
-
-Error types:
-- `CONNECTION_LOST` (value 101), `data` parameter contains lost device's id.
-- `PACKETS_BUFFER_FULL` (value 102), `data` parameter contains buffer length.
-- `MEMORY_FULL` (value 103), `data` parameter contains `FAIL`.
-- `CONTENT_TOO_LONG` (value 104), `data` parameter contains content length.
-
-```cpp
-void error_handler(uint8_t code, uint8_t data) {
-  if(code == CONNECTION_LOST) {
-    Serial.print("Connection with device ID ");
-    Serial.print(data, DEC);
-    Serial.println(" is lost.");
-  }
-  if(code == PACKETS_BUFFER_FULL) {
-    Serial.print("Packet buffer is full, has now a length of ");
-    Serial.println(data, DEC);
-    Serial.println("Possible wrong network configuration!");
-    Serial.println("For high complexity networks higher MAX_PACKETS over 10.");
-    Serial.println("See in PJON.h");
-  }
-  if(code == MEMORY_FULL) {
-    Serial.println("Packet memory allocation failed. Memory is full.");
-  }
-  if(code == CONTENT_TOO_LONG) {
-    Serial.print("Content is too long, length: ");
-    Serial.println(data, DEC);
-  }
-}
-```
-
-
-Now inform the network to call the error handler function in case of error:
-```cpp
-network.set_error(error_handler);
-```
-
-==== 
-
-##License
-
-```cpp
-/* Copyright (c) 2012-2015, Giovanni Blu Mitolo All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-- Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-
--  Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-
--  All advertising materials mentioning features or use of this software
-   must display the following acknowledgement:
-   This product includes PJON_ASK software developed by Giovanni Blu Mitolo.
-
--  Neither the name of PJON, PJON_ASK nor the
-   names of its contributors may be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-This software is provided by the copyright holders and contributors"as is"
-and any express or implied warranties, including, but not limited to, the
-implied warranties of merchantability and fitness for a particular purpose
-are disclaimed. In no event shall the copyright holder or contributors be
-liable for any direct, indirect, incidental, special, exemplary, or consequential
-damages (including, but not limited to, procurement of substitute goods or services;
-loss of use, data, or profits; or business interruption) however caused and on any
-theory of liability, whether in contract, strict liability, or tort (including
-negligence or otherwise) arising in any way out of the use of this software, even if
-advised of the possibility of such damage. */
