@@ -2,10 +2,10 @@
 ##PJON_ASK v1.0 stable
 #####Warning: PJON_ASK has been integrated in the PJON repository since v3.0-beta, see [OverSampling](https://github.com/gioblu/PJON/wiki/OverSampling) 
 
-PJON_ASK was an early implementation of the [PJON](https://github.com/gioblu/PJON/wiki) Standard, designed to be compatible with noisy and unreliable media like cheap 315/433Mhz radio transceivers. 
+PJON_ASK was an early implementation of the [PJON Standard](https://github.com/gioblu/PJON/wiki), designed to be compatible with noisy and unreliable media like cheap 315/433Mhz radio transceivers. 
 
 ####What is PJON?
-PJON (Padded Jittering Operative Network) is an Arduino compatible, multi-master, multi-media communications bus system. It proposes a Standard and it is designed as a framework for digital communication. It is a valid alternative to i2c, 1-Wire, Serial and other Arduino compatible protocols. If you are interested to know more about the PJON Standard, visit the [Wiki](https://github.com/gioblu/PJON/wiki). If you need help see the [documentation](https://github.com/gioblu/PJON/wiki/Documentation) or if something is not working visit the [Troubleshooting page](https://github.com/gioblu/PJON/wiki/Troubleshooting). If you own a Saleae Logic Analyzer see [saleae-pjon-protocol-analyzer](https://github.com/aperepel/saleae-pjon-protocol-analyzer) crafted by Andrew Grande.
+[PJON](https://github.com/gioblu/PJON) (Padded Jittering Operative Network) is an Arduino compatible, multi-master, multi-media communications bus system. It proposes a Standard and it is designed as a framework for digital communication. It is a valid alternative to i2c, 1-Wire, Serial and other Arduino compatible protocols. If you are interested to know more about the PJON Standard, visit the [Wiki](https://github.com/gioblu/PJON/wiki). If you need help see the [documentation](https://github.com/gioblu/PJON/wiki/Documentation) or if something is not working visit the [Troubleshooting page](https://github.com/gioblu/PJON/wiki/Troubleshooting). If you own a Saleae Logic Analyzer see [saleae-pjon-protocol-analyzer](https://github.com/aperepel/saleae-pjon-protocol-analyzer) crafted by Andrew Grande.
 
 [![Join the chat at https://gitter.im/gioblu/PJON](https://badges.gitter.im/gioblu/PJON.svg)](https://gitter.im/gioblu/PJON?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Donate](http://img.shields.io/paypal/donate.png?color=blue)](https://www.paypal.me/PJON)
 
