@@ -1,15 +1,15 @@
 ![PJON_ASK](http://www.gioblu.com/PJON/PJON-github-header-tiny.png)
-##PJON_ASK v1.0 stable
-#####Warning: Obsolete codebase, PJON_ASK has been integrated in the PJON repository, see [OverSampling](https://github.com/gioblu/PJON/wiki/OverSampling) 
+## PJON_ASK v1.0 stable
+##### Warning: Obsolete codebase, PJON_ASK has been integrated in the PJON repository, see [OverSampling](https://github.com/gioblu/PJON/wiki/OverSampling) 
 
 PJON_ASK was an early implementation of the [PJON Standard](https://github.com/gioblu/PJON/wiki), designed to be compatible with noisy and unreliable media like cheap 315/433Mhz ASK/FSK/OOK radio transceivers. 
 
-####What is PJON?
+#### What is PJON?
 [PJON](https://github.com/gioblu/PJON) (Padded Jittering Operative Network) is an Arduino compatible, multi-master, multi-media communications bus system. It proposes a Standard and it is designed as a framework for digital communication. It is a valid alternative to i2c, 1-Wire, Serial and other Arduino compatible protocols. If you are interested to know more about the PJON Standard, visit the [Wiki](https://github.com/gioblu/PJON/wiki). If you need help see the [documentation](https://github.com/gioblu/PJON/wiki/Documentation) or if something is not working visit the [Troubleshooting page](https://github.com/gioblu/PJON/wiki/Troubleshooting). If you own a Saleae Logic Analyzer see [saleae-pjon-protocol-analyzer](https://github.com/aperepel/saleae-pjon-protocol-analyzer) crafted by Andrew Grande.
 
 [![Join the chat at https://gitter.im/gioblu/PJON](https://badges.gitter.im/gioblu/PJON.svg)](https://gitter.im/gioblu/PJON?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Donate](http://img.shields.io/paypal/donate.png?color=blue)](https://www.paypal.me/PJON)
 
-####Features
+#### Features
 - Device id implementation to enable univocal communication up to 254 devices  
 - Bus id implementation to optionally enable shared medium communication
 - Multi media compatibility (wires up to 50m, radio up to 5km)
@@ -23,7 +23,7 @@ PJON_ASK was an early implementation of the [PJON Standard](https://github.com/g
 - Packet manager to track and retransmit a failed packet sending in background
 - Error handling
 
-####Compatibility
+#### Compatibility
 - ATmega88/168/328 16Mhz (Diecimila, Duemilanove, Uno, Nano, Mini, Lillypad)
 - ATmega2560 16Mhz (Arduino Mega)
 - ATmega16u4/32u4 16Mhz (Arduino Leonardo)
@@ -33,7 +33,7 @@ PJON_ASK was an early implementation of the [PJON Standard](https://github.com/g
 - ESP8266 NodeMCU v0.9-1.0 80Mhz, see https://github.com/esp8266/Arduino
 - MK20DX256 96Mhz (Teensy 3.1)
 
-####License
+#### License
 
 ```cpp
 /* Copyright 2012-2016 Giovanni Blu Mitolo
